@@ -15,7 +15,7 @@ import LogoTitle from '../navigation/LogoTitle';
 
 class TicketScreen extends React.Component {
   state = {
-    email: 'user4@ppp.qqq',
+    email: '',
     key: 'testtest',
     isLoading: false,
     actionCodeSettings: '',
@@ -41,13 +41,42 @@ class TicketScreen extends React.Component {
       firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
         .then(() => {
           const provider = new firebase.auth.GoogleAuthProvider();
-          if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
+          const link = '';
+/*
+          firebase.links()
+            .getInitialLink()
+            .then((url) => {
+              if (firebase.auth().isSignInWithEmailLink(url)) {
+                // call signInWithEmailLink or make a credential from the url using
+                // firebase.auth.EmailAuthProvider.credentialWithLink(email, url)
+                // and use any of the credential based auth flows with it, e.g. linkWithCredential
+                const email = SecureStore.getItemAsync('emailForSignIn');
+                if (!email) {
+                  // Todo: no email →再入力
+                }
+                firebase.auth.EmailAuthProvider.credentialWithLink(email, url);
+                // The client SDK will parse the code from the link for you.
+                firebase.auth().signInWithEmailLink(this.state.email, link)
+                  .then((result) => {
+                    try {
+                      SecureStore.deleteItemAsync('emailForSignIn');
+                    } catch (error) {
+                      console.log(error);
+                    }
+                  });
+              } else {
+                // not a sign-in link - must be some other type of link
+              }
+            });
+*/
+
+          if (firebase.auth().isSignInWithEmailLink(this.state.email, link)) {
             const email = SecureStore.getItemAsync('emailForSignIn');
             if (!email) {
-              email = window.prompt('Please provide your email for confirmation');
+              // email = window.prompt('Please provide your email for confirmation');
             }
             // The client SDK will parse the code from the link for you.
-            firebase.auth().signInWithEmailLink(email, window.location.href)
+            firebase.auth().signInWithEmailLink(this.state.email, link)
               .then((result) => {
                 try {
                   SecureStore.deleteItemAsync('emailForSignIn');

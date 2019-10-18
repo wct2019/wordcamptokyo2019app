@@ -67,7 +67,7 @@ TicketStack.navigationOptions = () => ({
       name={
         Platform.OS === 'ios'
           ? 'ios-log-in'
-          : 'md-ilog-in'
+          : 'md-log-in'
       }
     />
   ),
