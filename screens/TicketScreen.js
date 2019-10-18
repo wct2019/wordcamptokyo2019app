@@ -1,4 +1,5 @@
 import React from 'react';
+import { SecureStore } from 'expo';
 import firebase from 'firebase';
 import {
   StyleSheet,
@@ -17,6 +18,48 @@ class TicketScreen extends React.Component {
     email: 'user4@ppp.qqq',
     key: 'testtest',
     isLoading: false,
+    actionCodeSettings: '',
+  }
+
+  async componentDidMount() {
+    this.state.actionCodeSettings = {
+      url: 'https://www.example.com/finishSignUp?cartId=1234',
+      // This must be true.
+      handleCodeInApp: true,
+      iOS: {
+        bundleId: 'com.example.ios',
+      },
+      android: {
+        packageName: 'com.example.android',
+        installApp: true,
+        minimumVersion: '12',
+      },
+      dynamicLinkDomain: 'example.page.link',
+    };
+    // check login status
+    try {
+      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+        .then(() => {
+          const provider = new firebase.auth.GoogleAuthProvider();
+          if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
+            const email = SecureStore.getItemAsync('emailForSignIn');
+            if (!email) {
+              email = window.prompt('Please provide your email for confirmation');
+            }
+            // The client SDK will parse the code from the link for you.
+            firebase.auth().signInWithEmailLink(email, window.location.href)
+              .then((result) => {
+                try {
+                  SecureStore.deleteItemAsync('emailForSignIn');
+                } catch (error) {
+                  console.log(error);
+                }
+              })
+          }
+        });
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   navigateToHome() {
@@ -28,30 +71,16 @@ class TicketScreen extends React.Component {
     });
     this.props.navigation.dispatch(resetAction);
   }
-/*
-  async function storeData(key, value) {
-    try {
-      await AsyncStorage.setItem(key, value);
-      // eslint-disable-next-line
-      console.log('Async ' + key + ' saved');
-    } catch (e) {
-      // saving error
-      // eslint-disable-next-line
-      console.log('Async ' + key + ' error', e);
-    }
-  }
-*/
+
   // eslint-disable-next-line
   handleSubmit() {
-    /*
-    firebase.auth().sendSignInLinkToEmail(this.state.email, actionCodeSettings)
-      .then(function() {
-        storeData('emailForSignIn', this.state.email);
+    firebase.auth().sendSignInLinkToEmail(this.state.email, this.state.actionCodeSettings)
+      .then(() => {
+        SecureStore.setItemAsync('emailForSignIn', this.state.email);
       })
-    .catch(function(error) {
-          // Some error occurred, you can inspect the code: error.code
-    });
-    */
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   render() {
@@ -63,7 +92,7 @@ class TicketScreen extends React.Component {
         <Text style={styles.article}>
 チケット購入時に使用されたメールアドレスを入力し、「チケットを認証する」ボタンを押してください。
 確認のメールが配信されますので、届いたメールのリンクより認証を完了してください。
-入場に使用されるQRコードが表示されます。
+認証が完了すると、入場に使用されるQRコードが表示されます。
         </Text>
 
         <TextInput
