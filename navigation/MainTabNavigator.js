@@ -49,8 +49,8 @@ HomeStack.path = '';
 
 const TicketStack = createStackNavigator(
   {
-    Ticket: TicketScreen,
     TicketQR: TicketQRScreen,
+    Ticket: TicketScreen,
     // Home: SessionsListScreen,
   },
   config,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react'
 import firebase from 'firebase';
 import {
   StyleSheet,
@@ -9,41 +9,36 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import QRCode from 'react-native-qrcode';
+import QRCode from 'react-native-qrcode-svg';
 import LogoTitle from '../navigation/LogoTitle';
 
 class TicketScreen extends React.Component {
   state = {
     email: 'user4@ppp.qqq',
     key: 'testtest',
+    ticketid: '12345',
+    text: 'https://2019.tokyo.wp-checkin.com/ticket/12345',
   }
 
   render() {
     return (
       <View style={styles.container}>
-      <Text style={styles.title}>
+        <Text style={styles.title}>
         入場チケット
-      </Text>
-      <Text style={styles.article}>
+        </Text>
+        <Text style={styles.article}>
       このQRコードを受付に提示してください。
-      </Text>
+        </Text>
 
         <QRCode
-          value={this.state.email + ',' + '12345'}
-          size={250}
-          bgColor='black'
-          fgColor='white'
+          value={this.state.text}
+          size={200}
+          bgColor="purple"
+          fgColor="white"
         />
-        <Text>Ticket ID</Text>
-        <Text>Email : xxx@xxxx.xx</Text>
-        <Text>Ticket Category</Text>
-        <Image
-          source={
-            // eslint-disable-next-line
-            require('../assets/images/robot-prod.png')
-          }
-          style={styles.welcomeImage}
-        />
+        <Text>
+          Email : {this.state.email}
+        </Text>
       </View>
     );
   }
@@ -62,6 +57,8 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     backgroundColor: '#FFF7E3',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   input: {
     backgroundColor: '#eee',
