@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import QRCode from 'react-native-qrcode';
+import QRCode from 'react-native-qrcode-svg';
 import LogoTitle from '../navigation/LogoTitle';
 
 class TicketScreen extends React.Component {
