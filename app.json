@@ -1,7 +1,8 @@
 {
   "expo": {
     "name": "WordCamp Tokyo 2019",
-    "slug": "wordcamptokyo",
+    "slug": "wct19",
+    "scheme": "wct19",
     "privacy": "public",
     "sdkVersion": "34.0.0",
     "platforms": [
