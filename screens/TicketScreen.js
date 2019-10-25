@@ -1,5 +1,6 @@
 import React from 'react';
-import { SecureStore } from 'expo';
+// import { SecureStore } from 'expo';
+import * as SecureStore from 'expo-secure-store';
 import firebase from 'firebase';
 import {
   StyleSheet,
@@ -23,7 +24,7 @@ class TicketScreen extends React.Component {
 
   async componentDidMount() {
     this.state.actionCodeSettings = {
-      url: 'https://www.example.com/finishSignUp?cartId=1234',
+      url: 'https://wordcamptokyo2019app.web.app/finishSignUp?cartId=1234',
       // This must be true.
       handleCodeInApp: true,
       iOS: {
@@ -34,7 +35,7 @@ class TicketScreen extends React.Component {
         installApp: true,
         minimumVersion: '12',
       },
-      dynamicLinkDomain: 'example.page.link',
+      dynamicLinkDomain: 'wct19.compin.jp',
     };
     // check login status
     try {
@@ -70,7 +71,7 @@ class TicketScreen extends React.Component {
             });
 */
 
-          if (firebase.auth().isSignInWithEmailLink(this.state.email, link)) {
+          if (firebase.auth().isSignInWithEmailLink(this.state.email)) {
             const email = SecureStore.getItemAsync('emailForSignIn');
             if (!email) {
               // email = window.prompt('Please provide your email for confirmation');
@@ -103,6 +104,7 @@ class TicketScreen extends React.Component {
 
   // eslint-disable-next-line
   handleSubmit() {
+    console.log("submit new");
     firebase.auth().sendSignInLinkToEmail(this.state.email, this.state.actionCodeSettings)
       .then(() => {
         SecureStore.setItemAsync('emailForSignIn', this.state.email);

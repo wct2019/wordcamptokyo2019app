@@ -35,7 +35,8 @@
     "react-navigation": "^3.13.0",
     "react-redux": "^7.1.1",
     "realm": "^2.29.2",
-    "redux": "^4.0.4"
+    "redux": "^4.0.4",
+    "expo-secure-store": "~6.0.0"
   },
   "devDependencies": {
     "acorn": "^6.3.0",
