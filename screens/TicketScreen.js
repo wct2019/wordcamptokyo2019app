@@ -24,7 +24,7 @@ class TicketScreen extends React.Component {
 
   async componentDidMount() {
     this.state.actionCodeSettings = {
-      url: 'https://wordcamptokyo2019app.web.app/finishSignUp?cartId=1234',
+      url: 'https://wct19.compin.jp/finishSignUp?cartId=1234',
       // This must be true.
       handleCodeInApp: true,
       iOS: {
