@@ -26,7 +26,7 @@ async function loadRestAPI() {
     console.log('AsyncStorage get roomList');
     const roomList = await AsyncStorage.getItem('roomList');
     // eslint-disable-next-line
-    if ((sessionsData !== null) && (speakersList !== null) && (roomList !== null) && false) {
+    if ((sessionsData !== null) && (speakersList !== null) && (roomList !== null)) {
       console.log('return from AsyncStorage');
       returnREST[0] = JSON.parse(roomList);
       returnREST[1] = JSON.parse(speakersList);

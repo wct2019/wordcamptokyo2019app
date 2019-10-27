@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 // import RestUrls from '../constants/RestUrls';
 import loadRestAPI from './RestDataManager';
+import decNumRefToString from './decNumRefToString';
 
 class SessionsList extends React.Component {
   state = {
@@ -66,7 +67,7 @@ class SessionsList extends React.Component {
       <View style={styles.sessionsListItem}>
         <TouchableHighlight onPress={() => { this.props.navigation.navigate('SessionDetail', { selectedSession: item, sessions: this.state.sessions, speakers: this.state.speakers }); }}>
           <View style={styles.sessionsListItemContent}>
-            <Text style={styles.sessionTitle}>{item.title.rendered}</Text>
+            <Text style={styles.sessionTitle}>{decNumRefToString(item.title.rendered)}</Text>
             <Text style={styles.sessionStartTime}>
               { item.session_date_time.date + item.session_date_time.time }
             </Text>

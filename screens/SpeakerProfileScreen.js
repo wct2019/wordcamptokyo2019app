@@ -7,6 +7,7 @@ import {
   Image,
 } from 'react-native';
 import LogoTitle from '../navigation/LogoTitle';
+import decNumRefToString from '../components/decNumRefToString';
 
 class SpeakerProfileScreen extends React.Component {
   /*
@@ -43,25 +44,29 @@ class SpeakerProfileScreen extends React.Component {
     let profileTxt = '';
     if (speakerItem.content.rendered !== undefined) {
       profileTxt = speakerItem.content.rendered.toString()
-        .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '')
-        .replace(/\n\n/g, '\n');
+        .replace(/\n/g, '')
+        .replace(/<br>/g, '\n')
+        .replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '');
+      profileTxt = decNumRefToString(profileTxt);
     }
     return (
       <View style={styles.container}>
-        <Text selectable>
-          { speakerItem.title.rendered.toString() }
+        <Text selectable style={styles.titleText}>
+          { decNumRefToString(speakerItem.title.rendered.toString()) }
         </Text>
-        <Image
-          source={
-             { uri: avaterurl }
-            // eslint-disable-next-line
-            // __DEV__
-            //   ? require('../assets/images/robot-prod.png')
-            //   : require('../assets/images/robot-prod.png')
-          }
-          style={styles.profileImage}
-        />
-        <Text selectable>{ profileTxt }</Text>
+        <View style={styles.speakerImage}>
+          <Image
+            source={
+               { uri: avaterurl }
+              // eslint-disable-next-line
+              // __DEV__
+              //   ? require('../assets/images/robot-prod.png')
+              //   : require('../assets/images/robot-prod.png')
+            }
+            style={styles.profileImage}
+          />
+        </View>
+        <Text selectable style={styles.description}>{ profileTxt }</Text>
       </View>
     );
   }
@@ -82,10 +87,29 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#FFF7E3',
   },
+  titleText: {
+    color: '#000000',
+    fontSize: 26,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 32,
+    marginHorizontal: 16,
+  },
+  speakerImage: {
+    marginTop: 16,
+    alignItems:'center',
+    justifyContent:'center',
+  },
   profileImage: {
     width: 200,
     height: 200,
     borderRadius: 100,
+  },
+  description: {
+    fontSize: 16,
+    color: '#000000',
+    marginTop: 8,
+    marginHorizontal: 16,
   },
 });
 export default SpeakerProfileScreen;

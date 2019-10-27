@@ -171,6 +171,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#D69D12',
     height: 39,
     width: 288,
+    borderRadius: 6,
   },
   linkbuttonText: {
     // fontFamily: 'Roboto',

@@ -118,26 +118,26 @@ class TicketScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>
-          チケット認証
-        </Text>
-        <Text style={styles.article}>
-チケット購入時に使用されたメールアドレスを入力し、「チケットを認証する」ボタンを押してください。
-確認のメールが配信されますので、届いたメールのリンクより認証を完了してください。
-認証が完了すると、入場に使用されるQRコードが表示されます。
-        </Text>
-
-        <TextInput
-          style={styles.input}
-          value={this.state.email}
-          onChangeText={(text) => { this.setState({ email: text }); }}
-          autoCapitalize="none"
-          autoCorrect={false}
-          placeholder="Email Address"
-        />
-        <TouchableHighlight style={styles.button} onPress={this.handleSubmit.bind(this)} underlayColor="#C70F66">
-          <Text style={styles.buttonTitle}> チケットを認証する</Text>
-        </TouchableHighlight>
+        <View style={styles.welcomeContainer}>
+          <Text style={styles.article}>
+  チケット購入時に使用されたメールアドレスを入力し、「チケットを認証する」ボタンを押してください。
+  </Text>
+  <Text style={styles.article}>
+  確認のメールが配信されますので、届いたメールのリンクより認証を完了してください。
+  認証が完了すると、入場に使用されるQRコードが表示されます。
+          </Text>
+          <TextInput
+            style={styles.input}
+            value={this.state.email}
+            onChangeText={(text) => { this.setState({ email: text }); }}
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholder="メールアドレスを入力してください"
+          />
+          <TouchableHighlight style={styles.button} onPress={this.handleSubmit.bind(this)}>
+            <Text style={styles.buttonText}> チケットを認証する</Text>
+          </TouchableHighlight>
+        </View>
       </View>
     );
   }
@@ -159,12 +159,50 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF7E3',
   },
   input: {
-    backgroundColor: '#eee',
+    backgroundColor: '#ffffff',
     height: 48,
+    marginTop: 24,
     marginBottom: 15,
     borderWidth: 1,
     borderColor: '#ddd',
     padding: 8,
+    width: 340,
+  },
+  titleText: {
+    color: '#000000',
+    fontSize: 26,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 32,
+    marginHorizontal: 16,
+  },
+  article: {
+    fontSize: 16,
+    color: '#000000',
+    marginTop: 8,
+    marginHorizontal: 24,
+  },
+  welcomeContainer: {
+    alignItems: 'center',
+    marginTop: 128,
+    marginBottom: 0,
+  },
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#D69D12',
+    height: 48,
+    width: 340,
+    borderRadius: 6,
+  },
+  buttonText: {
+    // fontFamily: 'Roboto',
+    fontWeight: 'bold',
+    fontSize: 18,
+    lineHeight: 48,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    letterSpacing: 0.32,
+    color: '#FFFFFF',
   },
 
 });
