@@ -15,8 +15,6 @@ class SessionsList extends React.Component {
     rooms: [],
     sessions: [],
     speakers: [],
-    selectedSession: [],
-    bookmarkSession: [],
   };
 
   componentWillMount() {
@@ -26,24 +24,33 @@ class SessionsList extends React.Component {
         console.log('data', sessionsData);
         const sessionsList = [];
         sessionsData[0].forEach((item) => {
-          sessionsList.push({ ...item, key: item.id.toString() });
+          if (item.id !== undefined) {
+            sessionsList.push({ ...item, key: item.id.toString() });
+          }
         });
         console.log(sessionsList);
         this.setState({ sessions: sessionsList });
 
         const roomsList = [];
         sessionsData[1].forEach((item) => {
-          roomsList.push({ ...item, key: item.id.toString() });
+          if (item.id !== undefined) {
+            roomsList.push({ ...item, key: item.id.toString() });
+          }
         });
         console.log(roomsList);
         this.setState({ rooms: roomsList });
 
+        /*
         const speakersList = [];
         sessionsData[2].forEach((item) => {
-          speakersList.push({ ...item, key: item.id.toString() });
+          if (item.id !== undefined) {
+            speakersList.push({ ...item, key: item.id.toString() });
+          }
         });
         console.log(speakersList);
         this.setState({ speakers: speakersList });
+        */
+        this.setState({ speakers: sessionsData[2] });
       },
     );
     console.log('sessions', this.state.sessions);
@@ -54,7 +61,7 @@ class SessionsList extends React.Component {
   renderSession({ item }) {
     console.log(item);
     console.log('item-id');
-    console.log(item.id.toString());
+    // console.log(item.id.toString());
     return (
       <View style={styles.sessionsListItem}>
         <TouchableHighlight onPress={() => { this.props.navigation.navigate('SessionDetail', { selectedSession: item, sessions: this.state.sessions, speakers: this.state.speakers }); }}>

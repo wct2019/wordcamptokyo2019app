@@ -8,16 +8,16 @@ import {
   Text,
   TextInput,
   TouchableHighlight,
-  TouchableOpacity,
 } from 'react-native';
-import { AsyncStorage } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import LogoTitle from '../navigation/LogoTitle';
 
 class TicketScreen extends React.Component {
   state = {
     email: '',
+    // eslint-disable-next-line
     key: 'testtest',
+    // eslint-disable-next-line
     isLoading: false,
     actionCodeSettings: '',
   }
@@ -41,9 +41,9 @@ class TicketScreen extends React.Component {
     try {
       firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
         .then(() => {
-          const provider = new firebase.auth.GoogleAuthProvider();
+          // const provider = new firebase.auth.GoogleAuthProvider();
           const link = '';
-/*
+          /*
           firebase.links()
             .getInitialLink()
             .then((url) => {
@@ -78,13 +78,14 @@ class TicketScreen extends React.Component {
             }
             // The client SDK will parse the code from the link for you.
             firebase.auth().signInWithEmailLink(this.state.email, link)
+              // eslint-disable-next-line
               .then((result) => {
                 try {
                   SecureStore.deleteItemAsync('emailForSignIn');
                 } catch (error) {
                   console.log(error);
                 }
-              })
+              });
           }
         });
     } catch (e) {
@@ -104,7 +105,7 @@ class TicketScreen extends React.Component {
 
   // eslint-disable-next-line
   handleSubmit() {
-    console.log("submit new");
+    console.log('submit new');
     firebase.auth().sendSignInLinkToEmail(this.state.email, this.state.actionCodeSettings)
       .then(() => {
         SecureStore.setItemAsync('emailForSignIn', this.state.email);
@@ -143,11 +144,12 @@ class TicketScreen extends React.Component {
 }
 
 TicketScreen.navigationOptions = {
-  title: 'Ticket',
+  title: 'チケット',
   headerTitle: <LogoTitle />,
   headerStyle: {
     backgroundColor: '#2C9060',
   },
+  headerTintColor: '#ffffff',
 };
 
 const styles = StyleSheet.create({

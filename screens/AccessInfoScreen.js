@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import LogoTitle from '../navigation/LogoTitle';
 
-class ExhibitionListScreen extends React.Component {
+class AccessInfoScreen extends React.Component {
   /*
   state = {
     sessionsList: [],
@@ -20,7 +20,7 @@ class ExhibitionListScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Exhibition List</Text>
+        <Text>Access List</Text>
         <Image
           source={
             // eslint-disable-next-line
@@ -33,12 +33,13 @@ class ExhibitionListScreen extends React.Component {
   }
 }
 
-ExhibitionListScreen.navigationOptions = {
-  title: 'Exhibition',
+AccessInfoScreen.navigationOptions = {
+  title: 'アクセス',
   headerTitle: <LogoTitle />,
   headerStyle: {
     backgroundColor: '#2C9060',
   },
+  headerTintColor: '#ffffff',
 };
 
 const styles = StyleSheet.create({
@@ -49,4 +50,4 @@ const styles = StyleSheet.create({
   },
 
 });
-export default ExhibitionListScreen;
+export default AccessInfoScreen;

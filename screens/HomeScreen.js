@@ -9,11 +9,15 @@ import {
   TouchableHighlight,
   View,
   ImageBackground,
+  Linking,
 } from 'react-native';
 import LogoTitle from '../navigation/LogoTitle';
 
 class HomeScreen extends React.Component {
   render() {
+    function linkHandler(url) {
+      Linking.openURL(url);
+    }
     return (
       <View style={styles.container}>
         <ImageBackground
@@ -36,13 +40,13 @@ class HomeScreen extends React.Component {
                   style={styles.welcomeImage}
                 />
               </TouchableOpacity>
-              <TouchableHighlight style={styles.linkbutton} onPress={() => { this.props.navigation.navigate('Home'); }}>
+              <TouchableHighlight style={styles.linkbutton} onPress={() => { linkHandler('https://2019.tokyo.wordcamp.org/2019/10/11/contributor-day-prep/'); }}>
                 <Text style={styles.linkbuttonText}>コントリビューターデイ</Text>
               </TouchableHighlight>
-              <TouchableHighlight style={styles.linkbutton} onPress={() => { this.props.navigation.navigate('Home'); }}>
+              <TouchableHighlight style={styles.linkbutton} onPress={() => { linkHandler('https://2019.tokyo.wordcamp.org/2019/10/20/after-party/'); }}>
                 <Text style={styles.linkbuttonText}>アフターパーティー</Text>
               </TouchableHighlight>
-              <TouchableHighlight style={styles.linkbutton} onPress={() => { this.props.navigation.navigate('Home'); }}>
+              <TouchableHighlight style={styles.linkbutton} onPress={() => { linkHandler('https://2019.tokyo.wordcamp.org/news/'); }}>
                 <Text style={styles.linkbuttonText}>新着情報（公式ブログ）</Text>
               </TouchableHighlight>
             </View>

@@ -25,13 +25,15 @@ async function loadRestAPI() {
     const speakersList = await AsyncStorage.getItem('speakersList');
     console.log('AsyncStorage get roomList');
     const roomList = await AsyncStorage.getItem('roomList');
-    if ((sessionsData !== null) && (speakersList !== null) && (roomList !== null)) {
+    // eslint-disable-next-line
+    if ((sessionsData !== null) && (speakersList !== null) && (roomList !== null) && false) {
       console.log('return from AsyncStorage');
       returnREST[0] = JSON.parse(roomList);
       returnREST[1] = JSON.parse(speakersList);
       returnREST[2] = JSON.parse(sessionsData);
       // return [JSON.parse(sessionsData), JSON.parse(roomList), JSON.parse(speakersList)];
     } else {
+      console.log('return from REST API');
       const results = [];
       results.push(get(RestUrls.tracks).then(response => response.json()));
       results.push(get(RestUrls.speakers).then(response => response.json()));
@@ -93,6 +95,9 @@ function MakeRoomData(data) {
 function MakeSpeakerData(data) {
   const speakersList = [];
   data.forEach((item) => {
+    console.log('speaker item');
+    console.log(item.id);
+    console.log(item);
     speakersList[item.id] = item;
   });
   // console.log(speakersList);
@@ -107,18 +112,50 @@ function MakeSessionData(sessions, rooms, speakers) {
     if (item._links.speakers !== undefined) {
       sessionSpeakers = [];
       item._links.speakers.forEach((speakerurl) => {
-        // console.log(speakerurl.href);
-        const speakerid = speakerurl.href.toString().match(/[^/]+$/i)[0];
-        sessionSpeakers.push(speakers[speakerid].title);
+        console.log('speakerurl.href');
+        console.log(speakerurl.href);
+        console.log('speakerurl.items');
+        console.log(item);
+        let speakerid = '';
+        if (speakerurl.href !== undefined) {
+          // eslint-disable-next-line
+          speakerid = speakerurl.href.toString().match(/[^/]+$/i)[0];
+        }
+        sessionSpeakers.push({ speakername: speakers[speakerid].title, speakerid });
       });
     }
-    sessionsData[item.id] = {
-      ...item,
-      room_name: rooms[item.session_track],
-      speaker_name: sessionSpeakers,
-    };
+    let titleText = '';
+    if (item.title.rendered !== undefined) {
+      titleText = item.title.rendered.toString().trim();
+    }
+    console.log(titleText);
+    if ((titleText.indexOf('休憩') < 0)
+     && (titleText.indexOf('一般開場・受付') < 0)
+     && (titleText.indexOf('閉場') < 0)
+     && (titleText.indexOf('スポンサー') < 0)) {
+      console.log('unmatch');
+      sessionsData[item.id] = {
+        ...item,
+        room_name: rooms[item.session_track],
+        speaker_name: sessionSpeakers,
+      };
+    } else {
+      console.log('match');
+    }
   });
+  sessionsData.sort(compareTime);
   storeData('sessionsData', JSON.stringify(sessions));
   // console.log(sessionsData);
   return sessionsData;
+}
+
+function compareTime(a, b) {
+  let r = 0;
+  if (a.session_date_time.time < b.session_date_time.time) {
+    r = -1;
+  } else if (a.session_date_time.time > b.session_date_time.time) {
+    r = 1;
+  }
+
+  return r;
 }

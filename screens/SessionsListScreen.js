@@ -2,12 +2,10 @@ import React from 'react';
 
 import { StyleSheet, View, Text } from 'react-native';
 import SessionsList from '../components/SessionsList';
+import LogoTitle from '../navigation/LogoTitle';
 
 class SessionsListScreen extends React.Component {
   state = {
-    session: {},
-    selectedSession: [],
-    bookmarkSession: [],
   }
   /*
   componentWillMount() {
@@ -31,12 +29,13 @@ class SessionsListScreen extends React.Component {
 }
 
 SessionsListScreen.navigationOptions = {
-  title: 'Sessions',
+  title: 'セッション',
+  headerTitle: <LogoTitle />,
   headerStyle: {
     backgroundColor: '#2C9060',
   },
+  headerTintColor: '#ffffff',
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

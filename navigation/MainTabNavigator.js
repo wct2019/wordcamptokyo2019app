@@ -12,7 +12,7 @@ import SpeakerProfileScreen from '../screens/SpeakerProfileScreen';
 import TicketScreen from '../screens/TicketScreen';
 import TicketQRScreen from '../screens/TicketQRScreen';
 import BookmarkScreen from '../screens/BookmarkListScreen';
-import ExhibitionListScreen from '../screens/ExhibitionListScreen';
+import AccessInfoScreen from '../screens/AccessInfoScreen';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -115,14 +115,14 @@ BookmarksStack.navigationOptions = {
 
 BookmarksStack.path = '';
 
-const ExhibitionListStack = createStackNavigator(
+const AccessListStack = createStackNavigator(
   {
-    Links: ExhibitionListScreen,
+    Links: AccessInfoScreen,
   },
   config,
 );
 
-ExhibitionListStack.navigationOptions = {
+AccessListStack.navigationOptions = {
   tabBarLabel: 'アクセス',
   headerStyle: {
     backgroundColor: '#2C9060',
@@ -132,7 +132,7 @@ ExhibitionListStack.navigationOptions = {
   ),
 };
 
-ExhibitionListStack.path = '';
+AccessListStack.path = '';
 
 /*
 const LinksStack = createStackNavigator(
@@ -175,7 +175,7 @@ const tabNavigator = createBottomTabNavigator({
   HomeStack,
   TicketStack,
   SessionsListStack,
-  ExhibitionListStack,
+  AccessListStack,
 },
 {
   tabBarOptions: {

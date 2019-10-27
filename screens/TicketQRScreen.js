@@ -50,11 +50,12 @@ class TicketScreen extends React.Component {
 }
 
 TicketScreen.navigationOptions = {
-  title: 'Ticket',
+  title: 'チケット',
   headerTitle: <LogoTitle />,
   headerStyle: {
     backgroundColor: '#2C9060',
   },
+  headerTintColor: '#ffffff',
 };
 
 const styles = StyleSheet.create({
