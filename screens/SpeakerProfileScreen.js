@@ -31,16 +31,18 @@ class SpeakerProfileScreen extends React.Component {
 
   render() {
     const speakerItem = this.state.speakers[this.state.selectedSpeakerId];
-    console.log('speaker data');
-    console.log(speakerItem);
+    // console.log('speaker data');
+    // console.log(speakerItem);
     let avaterurl = '';
-    Object.keys(speakerItem.avatar_urls).forEach((key) => {
-      // eslint-disable-next-line
-      console.log(key + "：" + speakerItem.avatar_urls[key] );
-      if (speakerItem.avatar_urls[key] !== undefined) {
-        avaterurl = speakerItem.avatar_urls[key].toString();
-      }
-    });
+    if (speakerItem.avatar_urls !== undefined) {
+      Object.keys(speakerItem.avatar_urls).forEach((key) => {
+        // eslint-disable-next-line
+        // console.log(key + "：" + speakerItem.avatar_urls[key] );
+        if (speakerItem.avatar_urls[key] !== undefined) {
+          avaterurl = speakerItem.avatar_urls[key].toString();
+        }
+      });
+    }
     let profileTxt = '';
     if (speakerItem.content.rendered !== undefined) {
       profileTxt = speakerItem.content.rendered.toString()

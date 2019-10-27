@@ -1,14 +1,13 @@
 {
   "expo": {
-    "name": "WordCamp Tokyo 2019",
+    "name": "WordCamp",
     "slug": "wct19",
     "scheme": "wct19",
     "privacy": "public",
     "sdkVersion": "34.0.0",
     "platforms": [
       "ios",
-      "android",
-      "web"
+      "android"
     ],
     "version": "1.0.0",
     "orientation": "portrait",
@@ -25,8 +24,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "jp.compin.wordcamptokyo2019app"
     },
-    "description": ""
+    "android": {
+      "package": "jp.compin.wordcamptokyo2019app"
+    },
+    "description": "WordCamp Tokyo 2019 Official Application"
   }
 }

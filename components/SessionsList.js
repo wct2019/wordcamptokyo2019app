@@ -13,6 +13,7 @@ import decNumRefToString from './decNumRefToString';
 
 class SessionsList extends React.Component {
   state = {
+    // eslint-disable-next-line
     rooms: [],
     sessions: [],
     speakers: [],
@@ -22,47 +23,52 @@ class SessionsList extends React.Component {
     // const sessionsData = loadRestAPI();
     loadRestAPI().then(
       (sessionsData) => {
-        console.log('data', sessionsData);
+        // console.log('data', sessionsData);
         const sessionsList = [];
-        sessionsData[0].forEach((item) => {
-          if (item.id !== undefined) {
-            sessionsList.push({ ...item, key: item.id.toString() });
-          }
-        });
-        console.log(sessionsList);
-        this.setState({ sessions: sessionsList });
+        if ((sessionsData[0] !== undefined)
+          && (sessionsData[1] !== undefined)
+          && (sessionsData[2] !== undefined)) {
+          sessionsData[0].forEach((item) => {
+            if (item.id !== undefined) {
+              sessionsList.push({ ...item, key: item.id.toString() });
+            }
+          });
+          // console.log(sessionsList);
+          this.setState({ sessions: sessionsList });
 
-        const roomsList = [];
-        sessionsData[1].forEach((item) => {
-          if (item.id !== undefined) {
-            roomsList.push({ ...item, key: item.id.toString() });
-          }
-        });
-        console.log(roomsList);
-        this.setState({ rooms: roomsList });
+          const roomsList = [];
+          sessionsData[1].forEach((item) => {
+            if (item.id !== undefined) {
+              roomsList.push({ ...item, key: item.id.toString() });
+            }
+          });
+          // console.log(roomsList);
+          // eslint-disable-next-line
+          this.setState({ rooms: roomsList });
 
-        /*
-        const speakersList = [];
-        sessionsData[2].forEach((item) => {
-          if (item.id !== undefined) {
-            speakersList.push({ ...item, key: item.id.toString() });
-          }
-        });
-        console.log(speakersList);
-        this.setState({ speakers: speakersList });
-        */
-        this.setState({ speakers: sessionsData[2] });
+          /*
+          const speakersList = [];
+          sessionsData[2].forEach((item) => {
+            if (item.id !== undefined) {
+              speakersList.push({ ...item, key: item.id.toString() });
+            }
+          });
+          // console.log(speakersList);
+          this.setState({ speakers: speakersList });
+          */
+          this.setState({ speakers: sessionsData[2] });
+        }
       },
     );
-    console.log('sessions', this.state.sessions);
-    console.log('rooms', this.state.rooms);
-    console.log('speakers', this.state.speakers);
+    // console.log('sessions', this.state.sessions);
+    // console.log('rooms', this.state.rooms);
+    // console.log('speakers', this.state.speakers);
   }
 
   renderSession({ item }) {
-    console.log(item);
-    console.log('item-id');
-    // console.log(item.id.toString());
+    // console.log(item);
+    // console.log('item-id');
+    // // console.log(item.id.toString());
     return (
       <View style={styles.sessionsListItem}>
         <TouchableHighlight onPress={() => { this.props.navigation.navigate('SessionDetail', { selectedSession: item, sessions: this.state.sessions, speakers: this.state.speakers }); }}>
@@ -102,12 +108,12 @@ async function loadRestAPI() {
   results.push(get(RestUrls.tracks).then(response => response.json()));
   results.push(get(RestUrls.speakers).then(response => response.json()));
   results.push(get(RestUrls.sessions).then(response => response.json()));
-  // console.log(await Promise.all(results));
+  // // console.log(await Promise.all(results));
   const returnREST = await Promise.all(results);
-  console.log(returnREST);
-  console.log(returnREST[0]);
-  console.log(returnREST[1]);
-  console.log(returnREST[2]);
+  // console.log(returnREST);
+  // console.log(returnREST[0]);
+  // console.log(returnREST[1]);
+  // console.log(returnREST[2]);
 }
 */
 

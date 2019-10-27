@@ -37,13 +37,6 @@ class TicketScreen extends React.Component {
         <Text>Ticket ID</Text>
         <Text>Email : xxx@xxxx.xx</Text>
         <Text>Ticket Category</Text>
-        <Image
-          source={
-            // eslint-disable-next-line
-            require('../assets/images/robot-prod.png')
-          }
-          style={styles.welcomeImage}
-        />
       </View>
     );
   }

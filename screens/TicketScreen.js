@@ -24,18 +24,17 @@ class TicketScreen extends React.Component {
 
   async componentDidMount() {
     this.state.actionCodeSettings = {
-      url: 'https://wct19.compin.jp/finishSignUp?cartId=1234',
+      url: 'https://wct19.compin.jp/',
       // This must be true.
       handleCodeInApp: true,
       iOS: {
-        bundleId: 'com.example.ios',
+        bundleId: 'jp.compin.wordcamptokyo2019app',
       },
       android: {
-        packageName: 'com.example.android',
+        packageName: 'jp.compin.wordcamptokyo2019app',
         installApp: true,
         minimumVersion: '12',
       },
-      dynamicLinkDomain: 'wct19.compin.jp',
     };
     // check login status
     try {
@@ -62,7 +61,7 @@ class TicketScreen extends React.Component {
                     try {
                       SecureStore.deleteItemAsync('emailForSignIn');
                     } catch (error) {
-                      console.log(error);
+                      // console.log(error);
                     }
                   });
               } else {
@@ -83,13 +82,13 @@ class TicketScreen extends React.Component {
                 try {
                   SecureStore.deleteItemAsync('emailForSignIn');
                 } catch (error) {
-                  console.log(error);
+                  // console.log(error);
                 }
               });
           }
         });
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 
@@ -105,7 +104,7 @@ class TicketScreen extends React.Component {
 
   // eslint-disable-next-line
   handleSubmit() {
-    console.log('submit new');
+    // console.log('submit new');
     firebase.auth().sendSignInLinkToEmail(this.state.email, this.state.actionCodeSettings)
       .then(() => {
         SecureStore.setItemAsync('emailForSignIn', this.state.email);
@@ -121,8 +120,8 @@ class TicketScreen extends React.Component {
         <View style={styles.welcomeContainer}>
           <Text style={styles.article}>
   チケット購入時に使用されたメールアドレスを入力し、「チケットを認証する」ボタンを押してください。
-  </Text>
-  <Text style={styles.article}>
+          </Text>
+          <Text style={styles.article}>
   確認のメールが配信されますので、届いたメールのリンクより認証を完了してください。
   認証が完了すると、入場に使用されるQRコードが表示されます。
           </Text>
