@@ -8,6 +8,7 @@ import {
   FlatList,
 } from 'react-native';
 // import RestUrls from '../constants/RestUrls';
+import * as SecureStore from 'expo-secure-store';
 import loadRestAPI from './RestDataManager';
 import decNumRefToString from './decNumRefToString';
 
@@ -17,9 +18,27 @@ class SessionsList extends React.Component {
     rooms: [],
     sessions: [],
     speakers: [],
+    fablist: [],
   };
 
   componentWillMount() {
+    // fabolite list
+/* ToDo
+    let fablist = [];
+    SecureStore.getItemAsync('faboliteSessions').then((dat) => {
+      console.log(dat);
+      if ((dat === undefined) || (dat === null)) {
+        this.setState({ fablist: dat });
+      } else {
+        this.setState({ fablist: [] });
+      }
+    });
+    if ((fablist === undefined) || (fablist === null)) {
+      SecureStore.setItemAsync('faboliteSessions', []);
+      fablist = [];
+    }
+    */
+    // this.setState({ fablist: fablist });
     // const sessionsData = loadRestAPI();
     loadRestAPI().then(
       (sessionsData) => {
@@ -69,6 +88,39 @@ class SessionsList extends React.Component {
     // console.log(item);
     // console.log('item-id');
     // // console.log(item.id.toString());
+    function fabHandler(id) {
+      console.log('clicked' + id);
+      // ToDo
+      /*
+      const fablist = SecureStore.getItemAsync('faboliteSessions');
+      if (fablist !== undefined) {
+        if (fablist[id] === true) {
+          fablist[id] = false;
+        } else {
+          fablist[id] = true;
+        }
+        SecureStore.setItemAsync('faboliteSessions', fablist);
+        // this.setState({ fablist });
+      }
+      */
+    }
+
+    function fabSelecter(id) {
+      /*
+      let fabStar = '☆';
+      const fablist = SecureStore.getItemAsync('faboliteSessions');
+      console.log('fablist : ');
+      console.log(fablist);
+      if (fablist !== undefined) {
+        if (fablist[id] === true) {
+          fabStar = '★';
+        }
+      }
+      return fabStar;
+      */
+      return '★';
+    }
+
     return (
       <View style={styles.sessionsListItem}>
         <TouchableHighlight onPress={() => { this.props.navigation.navigate('SessionDetail', { selectedSession: item, sessions: this.state.sessions, speakers: this.state.speakers }); }}>
@@ -80,7 +132,11 @@ class SessionsList extends React.Component {
           </View>
         </TouchableHighlight>
         <View style={styles.sessionsListItemBookmark}>
-          <Text style={styles.sessionsBookmarkStar}>☆</Text>
+          <TouchableHighlight style={styles.button} onPress={fabHandler(item.id)}>
+            <Text style={styles.sessionsBookmarkStar}>
+              { fabSelecter(item.id) }
+            </Text>
+          </TouchableHighlight>
         </View>
       </View>
     );

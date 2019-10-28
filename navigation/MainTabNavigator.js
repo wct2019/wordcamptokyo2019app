@@ -7,6 +7,7 @@ import HomeScreen from '../screens/HomeScreen';
 // import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import SessionsListScreen from '../screens/SessionsListScreen';
+import SessionsFaboliteScreen from '../screens/SessionsFaboliteScreen';
 import SessionDetailScreen from '../screens/SessionDetailScreen';
 import SpeakerProfileScreen from '../screens/SpeakerProfileScreen';
 import TicketScreen from '../screens/TicketScreen';
@@ -80,6 +81,7 @@ const SessionsListStack = createStackNavigator(
     SessionList: SessionsListScreen,
     SessionDetail: SessionDetailScreen,
     SpeakerProfile: SpeakerProfileScreen,
+    SessionFabolite:SessionsFaboliteScreen,
   },
   config,
 );
