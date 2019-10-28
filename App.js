@@ -12,6 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 import firebase from 'firebase';
 import AppNavigator from './navigation/AppNavigator';
 import ENV from './constants/env.json';
+import { store } from './redux';
 
 // eslint-disable-next-line
 require("firebase/firestore");
