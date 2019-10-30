@@ -2,7 +2,7 @@ import React from 'react';
 // import { SecureStore } from 'expo';
 import * as SecureStore from 'expo-secure-store';
 import firebase from 'firebase';
-import { connect } from 'react-redux';
+import { connect, Provider } from 'react-redux';
 import {
   StyleSheet,
   View,
@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import LogoTitle from '../navigation/LogoTitle';
-import { authUser, signIn } from '../redux';
+import { store, authUser, signIn } from '../redux';
 
 class TicketScreen extends React.Component {
   state = {

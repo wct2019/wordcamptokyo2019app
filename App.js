@@ -10,8 +10,8 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import firebase from 'firebase';
-import AppNavigator from './navigation/AppNavigator';
 import { connect, Provider } from 'react-redux'
+import AppNavigator from './navigation/AppNavigator';
 import { store } from './redux';
 import './utils/firebase';
 

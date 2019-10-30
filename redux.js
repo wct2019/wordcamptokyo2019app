@@ -106,7 +106,6 @@ export const verifyEmail = () => (dispatch) => {
 
 export const getTicketID = () => (dispatch) => {
   const user = store.getState().user.data;
-  let { ticketID } = store.getState().user.data;
   if (user) {
     const id = db.collection('/Tickets').where('email', '==', user.email)
       .get()
@@ -120,6 +119,8 @@ export const getTicketID = () => (dispatch) => {
         console.log('Error getting documents: ', error);
       });
     return id;
+  } else {
+    return null;
   }
 };
 

@@ -17,6 +17,8 @@
     "@expo/vector-icons": "^10.0.6",
     "@react-native-community/async-storage": "^1.6.2",
     "@react-navigation/web": "^1.0.0-alpha.9",
+    "asyncstorage-down": "^4.2.0",
+    "events": "^3.0.0",
     "expo": "^34.0.1",
     "expo-asset": "^6.0.0",
     "expo-constants": "6.0.0",
@@ -43,12 +45,14 @@
     "react-native-randombytes": "^3.5.3",
     "react-native-svg": "^9.13.3",
     "react-native-web": "^0.11.7",
+    "react-native-windows": "^0.57.2",
     "react-navigation": "^3.13.0",
     "react-redux": "^7.1.1",
     "realm": "^2.29.2",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
-    "rn-nodeify": "^10.2.0"
+    "rn-nodeify": "^10.2.0",
+    "stream": "0.0.2"
   },
   "devDependencies": {
     "acorn": "^6.3.0",
@@ -63,7 +67,8 @@
     "eslint-plugin-react": "^7.16.0",
     "jest-expo": "^34.1.0",
     "react-native-unimodules": "^0.5.4",
-    "react-test-renderer": "^16.11.0"
+    "react-test-renderer": "^16.11.0",
+    "redux-mock-store": "^1.5.3"
   },
   "private": true,
   "react-native": {
