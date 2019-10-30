@@ -2,6 +2,7 @@ import React from 'react';
 // import { SecureStore } from 'expo';
 import * as SecureStore from 'expo-secure-store';
 import firebase from 'firebase';
+import { connect } from 'react-redux';
 import {
   StyleSheet,
   View,
@@ -11,6 +12,7 @@ import {
 } from 'react-native';
 import { StackActions, NavigationActions } from 'react-navigation';
 import LogoTitle from '../navigation/LogoTitle';
+import { authUser, signIn } from '../redux';
 
 class TicketScreen extends React.Component {
   state = {
@@ -22,9 +24,22 @@ class TicketScreen extends React.Component {
     actionCodeSettings: '',
   }
 
+  constructor(props) {
+    super(props);
+    this.onChangeEmail = this.onChangeEmail.bind(this);
+    this.onChangePassword = this.onChangePassword.bind(this);
+    this.signIn = this.signIn.bind(this);
+    this.auth = this.auth.bind(this);
+    this.authGoogle = this.authGoogle.bind(this);
+    this.state = {
+      email: null,
+      password: null,
+    };
+  }
+
   async componentDidMount() {
-    this.state.actionCodeSettings = {
-      url: 'https://wordcamptokyo2019app.firebaseapp.com/action.html',
+    const actionCodeSettings = {
+      url: 'https://wct19.compin.jp/at/6SuK',
       // This must be true.
       handleCodeInApp: true,
       iOS: {
@@ -36,60 +51,27 @@ class TicketScreen extends React.Component {
         minimumVersion: '12',
       },
     };
-    // check login status
-    try {
-      firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-        .then(() => {
-          // const provider = new firebase.auth.GoogleAuthProvider();
-          const link = '';
-          /*
-          firebase.links()
-            .getInitialLink()
-            .then((url) => {
-              if (firebase.auth().isSignInWithEmailLink(url)) {
-                // call signInWithEmailLink or make a credential from the url using
-                // firebase.auth.EmailAuthProvider.credentialWithLink(email, url)
-                // and use any of the credential based auth flows with it, e.g. linkWithCredential
-                const email = SecureStore.getItemAsync('emailForSignIn');
-                if (!email) {
-                  // Todo: no email →再入力
-                }
-                firebase.auth.EmailAuthProvider.credentialWithLink(email, url);
-                // The client SDK will parse the code from the link for you.
-                firebase.auth().signInWithEmailLink(this.state.email, link)
-                  .then((result) => {
-                    try {
-                      SecureStore.deleteItemAsync('emailForSignIn');
-                    } catch (error) {
-                      // console.log(error);
-                    }
-                  });
-              } else {
-                // not a sign-in link - must be some other type of link
-              }
-            });
-*/
+    this.setState({ actionCodeSettings });
+  }
 
-          if (firebase.auth().isSignInWithEmailLink(this.state.email)) {
-            const email = SecureStore.getItemAsync('emailForSignIn');
-            if (!email) {
-              // email = window.prompt('Please provide your email for confirmation');
-            }
-            // The client SDK will parse the code from the link for you.
-            firebase.auth().signInWithEmailLink(this.state.email, link)
-              // eslint-disable-next-line
-              .then((result) => {
-                try {
-                  SecureStore.deleteItemAsync('emailForSignIn');
-                } catch (error) {
-                  // console.log(error);
-                }
-              });
-          }
-        });
-    } catch (e) {
-      // console.log(e);
-    }
+  onChangeEmail(email) {
+    this.setState({ email });
+  }
+
+  onChangePassword(password) {
+    this.setState({ password });
+  }
+
+  signIn() {
+    signIn = this.props;
+    const { email, password } = this.state;
+    signIn(email, password);
+  }
+
+  auth() {
+    authUser = this.props;
+    const { email, password } = this.state;
+    authUser(email, password);
   }
 
   navigateToHome() {
@@ -111,6 +93,8 @@ class TicketScreen extends React.Component {
       })
       .catch((error) => {
         console.log(error);
+        console.log(this.state.email);
+        console.log(this.state.actionCodeSettings);
       });
   }
 
@@ -122,19 +106,46 @@ class TicketScreen extends React.Component {
   チケット購入時に使用されたメールアドレスを入力し、「チケットを認証する」ボタンを押してください。
           </Text>
           <Text style={styles.article}>
+  パスワードはチケットの再表示に必要です。8文字以上のパスワードを設定してください。
+          </Text>
+          <Text style={styles.article}>
   確認のメールが配信されますので、届いたメールのリンクより認証を完了してください。
   認証が完了すると、入場に使用されるQRコードが表示されます。
           </Text>
           <TextInput
             style={styles.input}
             value={this.state.email}
-            onChangeText={(text) => { this.setState({ email: text }); }}
+            // onChangeText={(text) => { this.setState({ email: text }); }}
+            onChangeText={this.onChangeEmail}
             autoCapitalize="none"
+            autoCompleteType="email"
             autoCorrect={false}
             placeholder="メールアドレスを入力してください"
           />
-          <TouchableHighlight style={styles.button} onPress={this.handleSubmit.bind(this)}>
-            <Text style={styles.buttonText}> チケットを認証する</Text>
+          <TextInput
+            style={styles.input}
+            value={this.state.Password}
+            // onChangeText={(text) => { this.setState({ Password: text }); }}
+            onChangeText={this.onChangePassword}
+            autoCapitalize="none"
+            autoCompleteType="password"
+            autoCorrect={false}
+            placeholder="パスワード"
+            secureTextEntry
+          />
+          <TouchableHighlight
+            style={styles.button}
+            onPress={this.auth}
+            // disabled={!(email && password)}
+          >
+            <Text style={styles.buttonText}> 新規登録</Text>
+          </TouchableHighlight>
+          <TouchableHighlight
+            style={styles.button}
+            onPress={this.signIn}
+            // disabled={!(email && password)}
+          >
+            <Text style={styles.buttonText}> ログイン</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -172,7 +183,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginTop: 32,
+    marginTop: 24,
     marginHorizontal: 16,
   },
   article: {
@@ -205,4 +216,18 @@ const styles = StyleSheet.create({
   },
 
 });
-export default TicketScreen;
+
+const mapStateToProps = state => ({
+  user: state.user.data,
+  error: state.user.authError,
+});
+
+const mapDispatchToProps = {
+  authUser,
+  signIn,
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(TicketScreen);

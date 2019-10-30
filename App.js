@@ -11,20 +11,12 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import firebase from 'firebase';
 import AppNavigator from './navigation/AppNavigator';
-import ENV from './constants/env.json';
+import { connect, Provider } from 'react-redux'
+import { store } from './redux';
+import './utils/firebase';
 
 // eslint-disable-next-line
 require("firebase/firestore");
-
-const config = {
-  apiKey:             ENV.FIREBASE_API_KEY,
-  authDomain:         ENV.FIREBASE_AUTH_DOMAIN,
-  databaseURL:        ENV.FIREBASE_DB_URL,
-  projectId:          ENV.FIREBASE_PRJ_ID,
-  storageBucket:      ENV.FIREBASE_STORAGE,
-  messagingSenderId:  ENV.FIREBASE_SENDER_ID,
-};
-firebase.initializeApp(config);
 
 const db = firebase.firestore();
 
