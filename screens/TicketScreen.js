@@ -1,27 +1,32 @@
-import React from 'react';
+import React, { Component } from 'react';
 // import { SecureStore } from 'expo';
-import * as SecureStore from 'expo-secure-store';
-import firebase from 'firebase';
-import { connect, Provider } from 'react-redux';
+// import * as SecureStore from 'expo-secure-store';
+// import firebase from 'firebase';
+import { connect } from 'react-redux';
 import {
   StyleSheet,
   View,
   Text,
   TextInput,
   TouchableHighlight,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Icon,
 } from 'react-native';
+// import { Button, Icon, Input } from 'react-native-elements';
 import { StackActions, NavigationActions } from 'react-navigation';
 import LogoTitle from '../navigation/LogoTitle';
-import { store, authUser, signIn } from '../redux';
+import { authUser, signIn } from '../redux';
 
-class TicketScreen extends React.Component {
+class TicketScreen extends Component {
   state = {
     email: '',
+    password: '',
     // eslint-disable-next-line
     key: 'testtest',
     // eslint-disable-next-line
     isLoading: false,
-    actionCodeSettings: '',
+    // actionCodeSettings: '',
   }
 
   constructor(props) {
@@ -30,29 +35,26 @@ class TicketScreen extends React.Component {
     this.onChangePassword = this.onChangePassword.bind(this);
     this.signIn = this.signIn.bind(this);
     this.auth = this.auth.bind(this);
-    this.authGoogle = this.authGoogle.bind(this);
     this.state = {
       email: null,
       password: null,
     };
   }
 
-  async componentDidMount() {
-    const actionCodeSettings = {
-      url: 'https://wct19.compin.jp/at/6SuK',
-      // This must be true.
-      handleCodeInApp: true,
-      iOS: {
-        bundleId: 'jp.compin.wordcamptokyo2019app',
-      },
-      android: {
-        packageName: 'jp.compin.wordcamptokyo2019app',
-        installApp: true,
-        minimumVersion: '12',
-      },
-    };
-    this.setState({ actionCodeSettings });
+  componentWillReceiveProps(nextProps) {
+    console.log('updated');
+    console.log(this.props);
+    const { user } = nextProps;
+    console.log(user);
+    console.log(user.emailVerified);
+    if (user.emailVerified === true) {
+      console.log('navigate to QR');
+      this.props.navigation.navigate('TicketQR', { nextProps });
+    } else {
+      console.log('no navigate');
+    }
   }
+
 
   onChangeEmail(email) {
     this.setState({ email });
@@ -63,13 +65,13 @@ class TicketScreen extends React.Component {
   }
 
   signIn() {
-    signIn = this.props;
+    const { signIn } = this.props;
     const { email, password } = this.state;
     signIn(email, password);
   }
 
   auth() {
-    authUser = this.props;
+    const { authUser } = this.props;
     const { email, password } = this.state;
     authUser(email, password);
   }
@@ -84,6 +86,7 @@ class TicketScreen extends React.Component {
     this.props.navigation.dispatch(resetAction);
   }
 
+  /*
   // eslint-disable-next-line
   handleSubmit() {
     // console.log('submit new');
@@ -97,58 +100,105 @@ class TicketScreen extends React.Component {
         console.log(this.state.actionCodeSettings);
       });
   }
+  */
 
   render() {
+    const { error } = this.props;
+    const { email, password } = this.state;
+
+    const { user } = this.props;
+    if (user && user.emailVerified === true) {
+      console.log('navigate to QR in start');
+      this.props.navigation.navigate('TicketQRScreen');
+    } else {
+      console.log('no navigate in start');
+    }
+
     return (
-      <View style={styles.container}>
-        <View style={styles.welcomeContainer}>
-          <Text style={styles.article}>
-  チケット購入時に使用されたメールアドレスを入力し、「チケットを認証する」ボタンを押してください。
-          </Text>
-          <Text style={styles.article}>
-  パスワードはチケットの再表示に必要です。8文字以上のパスワードを設定してください。
-          </Text>
-          <Text style={styles.article}>
-  確認のメールが配信されますので、届いたメールのリンクより認証を完了してください。
-  認証が完了すると、入場に使用されるQRコードが表示されます。
-          </Text>
-          <TextInput
-            style={styles.input}
-            value={this.state.email}
-            // onChangeText={(text) => { this.setState({ email: text }); }}
-            onChangeText={this.onChangeEmail}
-            autoCapitalize="none"
-            autoCompleteType="email"
-            autoCorrect={false}
-            placeholder="メールアドレスを入力してください"
-          />
-          <TextInput
-            style={styles.input}
-            value={this.state.Password}
-            // onChangeText={(text) => { this.setState({ Password: text }); }}
-            onChangeText={this.onChangePassword}
-            autoCapitalize="none"
-            autoCompleteType="password"
-            autoCorrect={false}
-            placeholder="パスワード"
-            secureTextEntry
-          />
-          <TouchableHighlight
-            style={styles.button}
-            onPress={this.auth}
-            // disabled={!(email && password)}
-          >
-            <Text style={styles.buttonText}> 新規登録</Text>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={styles.button}
-            onPress={this.signIn}
-            // disabled={!(email && password)}
-          >
-            <Text style={styles.buttonText}> ログイン</Text>
-          </TouchableHighlight>
+      <TouchableWithoutFeedback
+        onPress={Keyboard.dismiss}
+        accessible={false}
+      >
+        <View style={styles.container}>
+          {error ? (
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '100%',
+                marginBottom: 32,
+                padding: 8,
+                backgroundColor: 'rgb(255, 100, 100)',
+                borderRadius: 8,
+                overflow: 'hidden',
+              }}
+            >
+              <Icon
+                name="error"
+                color="white"
+                size={16}
+                iconStyle={{
+                  marginRight: 8,
+                }}
+              />
+              <Text
+                style={{
+                  color: 'white',
+                  fontSize: 16,
+                }}
+              >
+                {error}
+              </Text>
+            </View>
+          ) : null}
+          <View style={styles.welcomeContainer}>
+            <Text style={styles.article}>
+    チケット購入時に使用されたメールアドレスを入力し、「チケットを認証する」ボタンを押してください。
+            </Text>
+            <Text style={styles.article}>
+    パスワードはチケットの再表示に必要です。8文字以上のパスワードを設定してください。
+            </Text>
+            <Text style={styles.article}>
+    確認のメールが配信されますので、届いたメールのリンクより認証を完了してください。
+    認証が完了すると、入場に使用されるQRコードが表示されます。
+            </Text>
+            <TextInput
+              style={styles.input}
+              value={this.state.email}
+              // onChangeText={(text) => { this.setState({ email: text }); }}
+              onChangeText={this.onChangeEmail}
+              autoCapitalize="none"
+              autoCompleteType="email"
+              autoCorrect={false}
+              placeholder="メールアドレスを入力してください"
+            />
+            <TextInput
+              style={styles.input}
+              value={this.state.Password}
+              // onChangeText={(text) => { this.setState({ Password: text }); }}
+              onChangeText={this.onChangePassword}
+              autoCapitalize="none"
+              autoCompleteType="password"
+              autoCorrect={false}
+              placeholder="パスワード"
+              secureTextEntry
+            />
+            <TouchableHighlight
+              style={styles.button}
+              onPress={this.auth}
+              // disabled={!(email && password)}
+            >
+              <Text style={styles.buttonText}> 新規登録</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={styles.button}
+              onPress={this.signIn}
+              // disabled={!(email && password)}
+            >
+              <Text style={styles.buttonText}> ログイン</Text>
+            </TouchableHighlight>
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
@@ -172,7 +222,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     height: 48,
     marginTop: 24,
-    marginBottom: 15,
+    marginBottom: 8,
     borderWidth: 1,
     borderColor: '#ddd',
     padding: 8,
@@ -194,7 +244,7 @@ const styles = StyleSheet.create({
   },
   welcomeContainer: {
     alignItems: 'center',
-    marginTop: 128,
+    marginTop: 48,
     marginBottom: 0,
   },
   button: {
@@ -203,6 +253,8 @@ const styles = StyleSheet.create({
     height: 48,
     width: 340,
     borderRadius: 6,
+    marginBottom: 16,
+    marginTop: 16,
   },
   buttonText: {
     // fontFamily: 'Roboto',
@@ -231,3 +283,4 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(TicketScreen);
+// export default TicketScreen;

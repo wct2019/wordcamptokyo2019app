@@ -9,7 +9,7 @@
       "ios",
       "android"
     ],
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "splash": {
@@ -28,7 +28,8 @@
       "bundleIdentifier": "jp.compin.wordcamptokyo2019app"
     },
     "android": {
-      "package": "jp.compin.wordcamptokyo2019app"
+      "package": "jp.compin.wordcamptokyo2019app",
+      "versionCode": 3
     },
     "description": "WordCamp Tokyo 2019 Official Application"
   }

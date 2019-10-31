@@ -2,8 +2,6 @@ import { combineReducers, createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { Alert } from 'react-native';
 import { Linking } from 'expo';
-import * as WebBrowser from 'expo-web-browser';
-import * as Google from 'expo-google-app-auth';
 import { FIREBASE_AUTH_DOMAIN } from 'react-native-dotenv';
 import firebase, { auth, db } from './utils/firebase';
 
@@ -70,21 +68,21 @@ export const verifyEmail = () => (dispatch) => {
   const user = store.getState().user.data;
   if (user) {
     Alert.alert(
-      'Email verification',
-      'We will send a verification link to your email account.',
+      'メール認証',
+      '登録されたメールアドレスに認証リンクを送信しました。',
       [
         { text: 'Cancel', style: 'cancel' },
         {
           text: 'OK',
           onPress: () => {
             user.sendEmailVerification({ url: Linking.makeUrl(FIREBASE_AUTH_DOMAIN) }).then(() => {
-              Alert.alert('The email has been sent.');
+              Alert.alert('メールは送信されました。');
               db.collection('/users')
                 .doc(user.uid)
                 .onSnapshot((docSnapshot) => {
                   const dbUser = docSnapshot.data();
                   if (dbUser && dbUser.emailVerifiedAt) {
-                    Alert.alert('Email verification has succeeded.');
+                    Alert.alert('認証に成功しました。');
                     dispatch({
                       type: 'SUCCESS_GET_USER',
                       data: dbUser,
@@ -105,7 +103,10 @@ export const verifyEmail = () => (dispatch) => {
 };
 
 export const getTicketID = () => (dispatch) => {
+  console.log('query ticket');
   const user = store.getState().user.data;
+  console.log('user of ticket');
+  console.log(user);
   if (user) {
     const id = db.collection('/Tickets').where('email', '==', user.email)
       .get()

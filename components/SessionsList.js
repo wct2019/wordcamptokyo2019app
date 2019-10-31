@@ -118,7 +118,7 @@ class SessionsList extends React.Component {
       }
       return fabStar;
       */
-      return '★';
+      return '';
     }
 
     return (

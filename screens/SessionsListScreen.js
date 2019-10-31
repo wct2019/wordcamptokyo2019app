@@ -18,9 +18,11 @@ class SessionsListScreen extends React.Component {
       <View style={styles.container}>
         <View style={styles.sessiontsTopItem}>
           <Text style={styles.sessionsTop}>セッションリスト</Text>
+          {/*
           <View style={styles.sessionsTopBookmarkLink}>
             <Text style={styles.sessionsTopBookmarkLinkText}>お気に入りを表示する★</Text>
           </View>
+          */}
         </View>
         <SessionsList navigation={this.props.navigation} />
       </View>

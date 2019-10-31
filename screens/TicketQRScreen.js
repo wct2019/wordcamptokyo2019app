@@ -9,16 +9,12 @@ import QRCode from 'react-native-qrcode-svg';
 import LogoTitle from '../navigation/LogoTitle';
 import {
   signOut,
-  sendPasswordResetEmail,
   verifyEmail,
   getTicketID,
 } from '../redux';
 
-class TicketScreen extends React.Component {
+class TicketQRScreen extends React.Component {
   state = {
-    email: '',
-    // eslint-disable-next-line
-    ticketID: 'testtest',
     // eslint-disable-next-line
     isLoading: false,
     emailVerified: false,
@@ -28,11 +24,6 @@ class TicketScreen extends React.Component {
 
   constructor(props) {
     super(props);
-    this.goToList = this.goToList.bind(this);
-    this.onChangePhoneNumber = this.onChangePhoneNumber.bind(this);
-    this.onChangePhoneNumberVerificationCode = this.onChangePhoneNumberVerificationCode.bind(this);
-    this.verifyPhoneNumber = this.verifyPhoneNumber.bind(this);
-    this.confirmPhoneNumberVerification = this.confirmPhoneNumberVerification.bind(this);
     const { user } = props;
     this.state = {
       user,
@@ -58,21 +49,26 @@ class TicketScreen extends React.Component {
   }
 
   render() {
+    /*
     const {
       dbUser,
       signOut,
-      verifyEmail,
       sendPasswordResetEmail,
     } = this.props;
+    */
     const { user } = this.state;
-    const { ticketID } = getTicketID();
-    if (ticketID === null) {
-      this.setState({ messageText: 'チケットが見つかりません。メールアドレスが正しいかご確認ください。登録メールアドレスが不明な場合はスタッフにお問い合わせください。'});
-    } else if (this.state.emailVerified) {
-      this.setState({ messageText: 'このQRコードを受付に提示してください。' });
-      QRText = 'https://2019.tokyo.wp-checkin.com/ticket/' + ticketID.toString();
+    // console.log('user');
+    // console.log(user);
+    // console.log('props');
+    // console.log(this.props);
+    const { getTicketID } = this.getTicketID.bind(this);
+    // console.log('ticketID');
+    // console.log(ticketID);
+    if (getTicketID === null) {
+      this.setState({ messageText: 'チケットが見つかりません。メールアドレスが正しいかご確認ください。登録メールアドレスが不明な場合はスタッフにお問い合わせください。' });
     } else {
-      this.setState({ messageText: 'メールアドレスの認証が完了していません。' });
+      this.setState({ messageText: 'このQRコードを受付に提示してください。' });
+      this.setState({ QRText: `https://2019.tokyo.wp-checkin.com/ticket/${ ticketID.toString()}` });
     }
     return (
       <View style={styles.container}>
@@ -94,7 +90,7 @@ class TicketScreen extends React.Component {
   }
 }
 
-TicketScreen.navigationOptions = {
+TicketQRScreen.navigationOptions = {
   title: 'チケット',
   headerTitle: <LogoTitle />,
   headerStyle: {
@@ -119,4 +115,4 @@ const styles = StyleSheet.create({
   },
 
 });
-export default TicketScreen;
+export default TicketQRScreen;
