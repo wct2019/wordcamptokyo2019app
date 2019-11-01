@@ -1,30 +1,59 @@
 import React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableHighlight,
+} from 'react-native';
 import SessionsList from '../components/SessionsList';
 import LogoTitle from '../navigation/LogoTitle';
 
 class SessionsListScreen extends React.Component {
-  state = {
+  constructor(props) {
+    super(props);
+    this.child = React.createRef();
   }
-  /*
-  componentWillMount() {
 
+  state = {
+    displayMode: 'ALL',
+    fabButtonText: 'お気に入りを表示する★',
   }
-  */
 
   render() {
+    function changeSelectedSession() {
+      const { displayMode } = this.state;
+      console.log('displayMode');
+      console.log(displayMode);
+      if (displayMode === 'STAR') {
+        this.setState({ displayMode: 'ALL' });
+        this.setState({ fabButtonText: '全セッションを表示する★' });
+      } else {
+        this.setState({ displayMode: 'STAR' });
+        this.setState({ fabButtonText: 'お気に入りを表示する★' });
+      }
+      this.render();
+      this.child.current.screenReflesh();
+    }
+    // const { displayMode } = this.state;
+    console.log('new displayMode');
+    console.log(this.state.displayMode);
+
     return (
       <View style={styles.container}>
         <View style={styles.sessiontsTopItem}>
           <Text style={styles.sessionsTop}>セッションリスト</Text>
-          {/*
-          <View style={styles.sessionsTopBookmarkLink}>
-            <Text style={styles.sessionsTopBookmarkLinkText}>お気に入りを表示する★</Text>
-          </View>
-          */}
+          <TouchableHighlight style={styles.button} onPress={changeSelectedSession.bind(this)}>
+            <View style={styles.sessionsTopBookmarkLink}>
+              <Text style={styles.sessionsTopBookmarkLinkText}>{this.state.fabButtonText}</Text>
+            </View>
+          </TouchableHighlight>
         </View>
-        <SessionsList navigation={this.props.navigation} />
+        <SessionsList
+          navigation={this.props.navigation}
+          displayMode={this.state.displayMode}
+          ref={this.child}
+        />
       </View>
     );
   }

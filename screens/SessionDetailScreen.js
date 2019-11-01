@@ -24,16 +24,6 @@ class SessionsDetailScreen extends React.Component {
     this.setState({
       selectedSession: params.selectedSession,
     });
-    // console.log('sessions1');
-    // console.log(params.sessions);
-    // console.log('sessions2');
-    // console.log(this.state.sessions);
-    // console.log('selectedSession1');
-    // console.log(params.selectedSession);
-    // console.log('selectedSession2');
-    // console.log(this.state.selectedSession.id);
-    // console.log('speakers');
-    // console.log(params.speakers);
   }
 
   renderSpeakerLink(speaker) {
@@ -45,10 +35,6 @@ class SessionsDetailScreen extends React.Component {
     if (speaker.item.speakerid !== undefined) {
       speakerId = speaker.item.speakerid.toString();
     }
-    // console.log('speaker');
-    // console.log(speaker);
-    // console.log('speakerName');
-    // console.log(speakerName);
     return (
       <TouchableHighlight onPress={() => { this.props.navigation.navigate('SpeakerProfile', { speakers: this.state.speakers, speakerid: speakerId }); }}>
         <Text style={styles.speakerName}>
@@ -60,8 +46,6 @@ class SessionsDetailScreen extends React.Component {
 
   render() {
     const { selectedSession } = this.state;
-    // console.log('selectedSession3');
-    // console.log(selectedSession);
     let sessionDescription = '';
 
     if (selectedSession.content.rendered !== undefined) {

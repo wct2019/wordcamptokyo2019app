@@ -6,9 +6,9 @@ import {
   TouchableHighlight,
   ScrollView,
   FlatList,
+  AsyncStorage,
 } from 'react-native';
 // import RestUrls from '../constants/RestUrls';
-import * as SecureStore from 'expo-secure-store';
 import loadRestAPI from './RestDataManager';
 import decNumRefToString from './decNumRefToString';
 
@@ -18,107 +18,136 @@ class SessionsList extends React.Component {
     rooms: [],
     sessions: [],
     speakers: [],
-    fablist: [],
+    fablist: {},
+    listUpdate: 0,
+    displayMode: 'ALL',
   };
 
   componentWillMount() {
     // fabolite list
-/* ToDo
-    let fablist = [];
-    SecureStore.getItemAsync('faboliteSessions').then((dat) => {
+    // let fablist = {};
+    console.log('props displayMode');
+    console.log(this.props.displayMode);
+    this.setState({ displayMode: this.props.displayMode });
+    AsyncStorage.getItem('faboliteSessions').then((dat) => {
+      console.log('dat');
       console.log(dat);
-      if ((dat === undefined) || (dat === null)) {
-        this.setState({ fablist: dat });
-      } else {
-        this.setState({ fablist: [] });
-      }
-    });
-    if ((fablist === undefined) || (fablist === null)) {
-      SecureStore.setItemAsync('faboliteSessions', []);
-      fablist = [];
-    }
-    */
-    // this.setState({ fablist: fablist });
-    // const sessionsData = loadRestAPI();
-    loadRestAPI().then(
-      (sessionsData) => {
-        // console.log('data', sessionsData);
-        const sessionsList = [];
-        if ((sessionsData[0] !== undefined)
-          && (sessionsData[1] !== undefined)
-          && (sessionsData[2] !== undefined)) {
-          sessionsData[0].forEach((item) => {
-            if (item.id !== undefined) {
-              sessionsList.push({ ...item, key: item.id.toString() });
-            }
-          });
-          // console.log(sessionsList);
-          this.setState({ sessions: sessionsList });
-
-          const roomsList = [];
-          sessionsData[1].forEach((item) => {
-            if (item.id !== undefined) {
-              roomsList.push({ ...item, key: item.id.toString() });
-            }
-          });
-          // console.log(roomsList);
-          // eslint-disable-next-line
-          this.setState({ rooms: roomsList });
-
-          /*
-          const speakersList = [];
-          sessionsData[2].forEach((item) => {
-            if (item.id !== undefined) {
-              speakersList.push({ ...item, key: item.id.toString() });
-            }
-          });
-          // console.log(speakersList);
-          this.setState({ speakers: speakersList });
-          */
-          this.setState({ speakers: sessionsData[2] });
+      if ((dat !== undefined) || (dat !== null) || (dat !== '')) {
+        // const data = dat.replace(/\\/g, '');
+        // data = data.replace(/"""""""/g, '');
+        // console.log('data');
+        // console.log(data);
+        const fabData = JSON.parse(dat);
+        if ((dat === '') || (dat === '[]')) {
+          this.setState({ fablist: {} });
+        } else {
+          this.setState({ fablist: fabData });
         }
-      },
-    );
-    // console.log('sessions', this.state.sessions);
-    // console.log('rooms', this.state.rooms);
-    // console.log('speakers', this.state.speakers);
+        // this.setState({ fablist: {} });
+      } else {
+        this.setState({ fablist: {} });
+      }
+      // when reset
+      // this.setState({ fablist: {} });
+
+      /*
+      if ((fablist === undefined) || (fablist === null)) {
+        SecureStore.setItemAsync('faboliteSessions', '');
+        fablist = {};
+      }
+      */
+      // this.setState({ fablist: fablist });
+      // const sessionsData = loadRestAPI();
+      loadRestAPI().then(
+        (sessionsData) => {
+          // console.log('data', sessionsData);
+          const sessionsList = [];
+          if ((sessionsData[0] !== undefined)
+            && (sessionsData[1] !== undefined)
+            && (sessionsData[2] !== undefined)) {
+            sessionsData[0].forEach((item) => {
+              if (item.id !== undefined) {
+                sessionsList.push({ ...item, key: item.id.toString() });
+              }
+            });
+            // console.log(sessionsList);
+            this.setState({ sessions: sessionsList });
+
+            const roomsList = [];
+            sessionsData[1].forEach((item) => {
+              if (item.id !== undefined) {
+                roomsList.push({ ...item, key: item.id.toString() });
+              }
+            });
+            // this.setState({ rooms: roomsList });
+            this.setState({ speakers: sessionsData[2] });
+          }
+        },
+      );
+    });
+  }
+
+  screenReflesh() {
+    console.log('update called');
+    this.setState(prevState => ({ listUpdate: prevState.listUpdate + 1 }));
+    console.log('props');
+    console.log(this.props.displayMode);
+    console.log('state');
+    console.log(this.state.displayMode);
+    this.setState({ displayMode: this.props.displayMode });
+    console.log('state-up');
+    console.log(this.state.displayMode);
+    console.log(this.state.listUpdate);
+    this.forceUpdate();
   }
 
   renderSession({ item }) {
     // console.log(item);
     // console.log('item-id');
     // // console.log(item.id.toString());
-    function fabHandler(id) {
-      console.log('clicked' + id);
-      // ToDo
-      /*
-      const fablist = SecureStore.getItemAsync('faboliteSessions');
-      if (fablist !== undefined) {
-        if (fablist[id] === true) {
-          fablist[id] = false;
-        } else {
-          fablist[id] = true;
-        }
-        SecureStore.setItemAsync('faboliteSessions', fablist);
-        // this.setState({ fablist });
-      }
-      */
-    }
 
-    function fabSelecter(id) {
-      /*
-      let fabStar = '☆';
-      const fablist = SecureStore.getItemAsync('faboliteSessions');
-      console.log('fablist : ');
-      console.log(fablist);
-      if (fablist !== undefined) {
-        if (fablist[id] === true) {
-          fabStar = '★';
-        }
+    function fabHandler() {
+      const { id } = item;
+      const indexId = `star${id.toString()}`;
+      // console.log(`clicked${id}`);
+      let { fablist } = this.state;
+
+      //  const fablist = JSON.parse(AsyncStorage.getItem('faboliteSessions'));
+      // console.log('fablist');
+      // console.log(fablist);
+      if ((fablist === null) || (fablist === undefined)) {
+        fablist = {};
       }
-      return fabStar;
-      */
-      return '';
+      if ((fablist[indexId] === null) || (fablist[indexId] === undefined)) {
+        fablist[indexId] = null;
+      }
+      if ((fablist[indexId] !== undefined) && (fablist[indexId] !== null)) {
+        // console.log('set fablist');
+        if (fablist[indexId] === undefined) {
+          // console.log('set fablist new');
+          fablist[indexId] = true;
+        } else if (fablist[indexId] === true) {
+          fablist[indexId] = false;
+        } else {
+          fablist[indexId] = true;
+        }
+      } else {
+        // console.log('set fablist of empty');
+        fablist[indexId] = true;
+        // console.log('result');
+        // console.log(fablist);
+      }
+      this.setState(fablist);
+      // console.log('update fablist');
+      // console.log(fablist);
+      // console.log('update fablist record');
+      // console.log(fablist[indexId]);
+      // console.log(JSON.stringify(fablist));
+      AsyncStorage.setItem('faboliteSessions', JSON.stringify(fablist));
+      // this.setState({ listUpdate: this.state.listUpdate + 1 });
+      this.setState(prevState => ({ listUpdate: prevState.listUpdate + 1 }));
+      // console.log('update state fablist');
+      // console.log(this.state.fablist);
     }
 
     return (
@@ -132,9 +161,9 @@ class SessionsList extends React.Component {
           </View>
         </TouchableHighlight>
         <View style={styles.sessionsListItemBookmark}>
-          <TouchableHighlight style={styles.button} onPress={fabHandler(item.id)}>
+          <TouchableHighlight style={styles.button} onPress={fabHandler.bind(this)}>
             <Text style={styles.sessionsBookmarkStar}>
-              { fabSelecter(item.id) }
+              { this.state.fablist[`star${item.id.toString()}`] ? '★' : '☆' }
             </Text>
           </TouchableHighlight>
         </View>
@@ -143,35 +172,50 @@ class SessionsList extends React.Component {
   }
 
   render() {
+    const allData = this.state.sessions;
+    const selectedData = [];
+    const fabData = this.state.fablist;
+    // eslint-disable-next-line
+    for (let key in allData) {
+      // if (fabData[key] === true) {
+      // console.log('fabData[key]');
+      // console.log(key);
+      // console.log(allData[key].id);
+      const { id } = allData[key];
+      const indexId = `star${id.toString()}`;
+      if ((fabData[indexId] !== undefined) && (fabData[indexId] === true)) {
+        // selectedData[dataCount] = allData[key];
+        selectedData.push(allData[key]);
+      }
+      // console.log(fabData[key]);
+      // const idkey = parseInt(key.replace(/^star/, ''), 10);
+      // console.log(idkey);
+      // }
+    }
+    // console.log('selected data');
+    // console.log(selectedData);
+    // console.log(allData);
+    // console.log('fabdata in render');
+    // console.log(fabData);
+
+    let displayData = [];
+    if (this.state.displayMode === 'STAR') {
+      displayData = selectedData;
+    } else {
+      displayData = allData;
+    }
+
     return (
       <ScrollView style={styles.sessionsList}>
-        <FlatList data={this.state.sessions} renderItem={this.renderSession.bind(this)} />
+        <FlatList
+          data={displayData}
+          execData={this.state.listUpdate}
+          renderItem={this.renderSession.bind(this)}
+        />
       </ScrollView>
     );
   }
 }
-
-/*
-function get(url) {
-  // eslint-disable-next-line
-  return fetch(url);
-}
-
-async function loadRestAPI() {
-  const results = [];
-  // const urls = [RestUrls.tracks, RestUrls.sessions, RestUrls.speakers];
-  // eslint-disable-next-line
-  results.push(get(RestUrls.tracks).then(response => response.json()));
-  results.push(get(RestUrls.speakers).then(response => response.json()));
-  results.push(get(RestUrls.sessions).then(response => response.json()));
-  // // console.log(await Promise.all(results));
-  const returnREST = await Promise.all(results);
-  // console.log(returnREST);
-  // console.log(returnREST[0]);
-  // console.log(returnREST[1]);
-  // console.log(returnREST[2]);
-}
-*/
 
 const styles = StyleSheet.create({
   sessionsList: {

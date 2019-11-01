@@ -84,7 +84,7 @@ function MakeRoomData(data) {
   const roomList = [];
   if (data !== undefined) {
     data.forEach((item) => {
-      roomList[item.id] = item.name;
+      roomList[`room${item.id}`] = item.name;
     });
   }
   // // console.log(roomList);
@@ -117,10 +117,6 @@ function MakeSessionData(sessions, rooms, speakers) {
       sessionSpeakers = [];
       if (item._links.speakers !== undefined) {
         item._links.speakers.forEach((speakerurl) => {
-          // console.log('speakerurl.href');
-          // console.log(speakerurl.href);
-          // console.log('speakerurl.items');
-          // console.log(item);
           let speakerid = '';
           if (speakerurl.href !== undefined) {
             // eslint-disable-next-line
@@ -141,7 +137,7 @@ function MakeSessionData(sessions, rooms, speakers) {
         // console.log('unmatch');
         sessionsData[item.id] = {
           ...item,
-          room_name: rooms[item.session_track],
+          room_name: rooms[`room${item.session_track}`],
           speaker_name: sessionSpeakers,
         };
       } else {
