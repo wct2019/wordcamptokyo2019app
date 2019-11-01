@@ -32,12 +32,20 @@ class TicketQRScreen extends React.Component {
 
   componentDidMount() {
     const { user } = this.state;
+    console.log('user');
+    console.log(user);
+    console.log(this.props.user);
+/*
     if (!user.emailVerified) {
       this.props.verifyEmail();
       this.setState({ emailVerified: false });
     } else {
       this.setState({ emailVerified: true });
     }
+*/
+      // Temporaky
+      this.setState({ emailVerified: true });
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -61,10 +69,12 @@ class TicketQRScreen extends React.Component {
     // console.log(user);
     // console.log('props');
     // console.log(this.props);
-    const { getTicketID } = this.getTicketID.bind(this);
+    // const { getTicketID } = this;
+    const ticketID = '12345';
+
     // console.log('ticketID');
     // console.log(ticketID);
-    if (getTicketID === null) {
+    if (ticketID === null) {
       this.setState({ messageText: 'チケットが見つかりません。メールアドレスが正しいかご確認ください。登録メールアドレスが不明な場合はスタッフにお問い合わせください。' });
     } else {
       this.setState({ messageText: 'このQRコードを受付に提示してください。' });

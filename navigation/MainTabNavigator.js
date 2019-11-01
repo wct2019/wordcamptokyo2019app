@@ -175,7 +175,7 @@ SettingsStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
   HomeStack,
-  TicketStack,
+  // TicketStack,
   SessionsListStack,
   AccessListStack,
 },

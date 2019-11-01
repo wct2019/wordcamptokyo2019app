@@ -57,11 +57,11 @@ class TicketScreen extends Component {
 
 
   onChangeEmail(email) {
-    this.setState({ email });
+    //this.setState({ email });
   }
 
   onChangePassword(password) {
-    this.setState({ password });
+    //this.setState({ password });
   }
 
   signIn() {
@@ -109,7 +109,7 @@ class TicketScreen extends Component {
     const { user } = this.props;
     if (user && user.emailVerified === true) {
       console.log('navigate to QR in start');
-      this.props.navigation.navigate('TicketQRScreen');
+      this.props.navigation.navigate('TicketQR', this.props);
     } else {
       console.log('no navigate in start');
     }

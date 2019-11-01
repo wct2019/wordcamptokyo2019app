@@ -45,15 +45,15 @@ export const sendPasswordResetEmail = () => (dispatch) => {
   const email = store.getState().user.data && store.getState().user.data.email;
   if (email) {
     Alert.alert(
-      'Reset Password',
-      'We will email you instructions on how to reset your password.',
+      'パスワードリセット',
+      'パスワード再設定用のリンクを送信しました。',
       [
         { text: 'Cancel', style: 'cancel' },
         {
           text: 'OK',
           onPress: () => {
             auth.sendPasswordResetEmail(email).then(() => {
-              Alert.alert('The email has been sent to your account.');
+              Alert.alert('ご登録のメールアカウントへ送信しました。');
             }).catch(({ message }) => {
               Alert.alert(message);
             });
